@@ -35,7 +35,7 @@ On top of using the Django webframework and the Django model classes.
 The project will also make use of some bootstrap elements, in specific it will use:
 <ul>
   <li>alerts, as messages to inform to user of wrong input</li>
-  <li>a progress bar, when a dwarf is mining</li>
+  <li>containers or a grid, to align all the different elements</li>
   <li>a navigation bar to go to different pages</li>
 </ul> 
 
