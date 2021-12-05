@@ -16,7 +16,7 @@ The hardest parts of this project will probaply be:
   <li>Fitting every stat and piece of information about the different dwarves and mines on the webpages in a clear view.</li>
   <li>Creating a compelling game without live updating the browser.</li>
   <li>Making the interface user friendly without the use of live updating.</li>
-  <li>Fitting in all the different gameplay elements in the timespan given</li>
+  <li>Fitting in all the different gameplay elements in the timespan given.</li>
 </ul> 
 
 # Sketches
