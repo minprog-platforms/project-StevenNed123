@@ -89,6 +89,11 @@ The user can choose a name for their new dwarf and a portrait will be chosen at 
 
 ![Upgrading](doc/upgrades_page.png)
 
+### Dwarven portraits
+When a new dwarf is created a portrait will be chosen at random, each portrait will use the same base except for the colors
+
+![Dwarf Portrait](doc/portrait.png)
+
 # The Database
 
 With the current design the amount of models the site uses will be seven.
