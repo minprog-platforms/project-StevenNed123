@@ -3,8 +3,8 @@
 Dwarves is a browser based idle game, where users build a team of dwarves to mine various minerals.
 These minerals can be used to upgrade each dwarf, allowing for faster mining and more upgrading.
 
-Dwarves in essence is a very simple game that does not require any active elements or live updating of webpages.
-The game will however require large databases to store different users, dwarves and upgrades.
+Dwarves is in essence a very simple game that does not require any active elements or live updating of webpages.
+The game will however require large scale databases to store different users, dwarves and upgrades.
 This makes it suitable to work with the Django webframework and make use of the models that Django provides.
 
 There are already a ton of idle games out there, cookie clicker, forager, melvor idle or even social games like clash of clans.
