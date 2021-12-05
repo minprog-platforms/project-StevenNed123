@@ -23,7 +23,7 @@ The hardest parts of this project will probaply be:
 # Sketches
 
 To get a general idea of what the webpages will look like some quick sketches where made.
-These sketches also include a trading which is an additional feature that probaply wont be added so in future designs this page will not be present.
+These sketches also include a trading page which is an additional feature that probaply wont be added, so in future designs this page will not be present.
 Check the design portion for a more detailed overview of the pages.
 
 ![Sketch1](doc/sketch1.png)
@@ -33,7 +33,7 @@ Check the design portion for a more detailed overview of the pages.
 
 # External Components 
 
-On top of using the Django webframework and the Django model classes.
+On top of using the Django webframework and the Django model class.
 The project will also make use of some bootstrap elements, in specific it will use:
 <ul>
   <li>alerts, as messages to inform to user of wrong input</li>
@@ -44,9 +44,9 @@ The project will also make use of some bootstrap elements, in specific it will u
 # Design
 
 Every page on the site will make use of a standard navigation bar, so from every page it is possible to go to almost every other page.
-This is one of the reasons why this design document wont feature a workflow, because it just would not be very insightful.
-All these pages will asume that the user is logged in. T
-he login page and the register page will be default Django pages with maybe a color change to match the other pages.
+This is one of the reasons why this design document wont feature a workflow, because it just wouldn't be very insightful.
+All these pages will asume that the user is logged in.
+The login page and the register page will be default Django pages with maybe a color change to match the other pages.
 When the user is not logged in, the tabs mining, upgrading, inventory and my dwarves will all be hidden and unavailable.
 
 ### All dwarves page
@@ -71,7 +71,7 @@ This page will allow users to view the minerals they own, gold being the most im
 
 ### Mining page
 This will allow users to view all available mines, the resources in those mines and the droprate.
-When a dwarf is currently mining in a mine, it will show the time it takes for their bag to be filled aswell as an option to remove the dwarf from mining.
+When a dwarf is currently mining in a mine, it will show the time it takes for their bag to be filled aswell as an option to remove the dwarf from that mine.
 The user can only see their own dwarf in the mining page, so two users can mine in the same mine at the same time.
 When a mine is not occupied, the user can press the start mining button and will be taken to a selection of available dwarfs on the selection page.
 
@@ -86,8 +86,8 @@ This page will allow users to select a dwarf to either upgrade or start mining.
 Before the user goes to the upgrading page they will be taken to the selection page to select a dwarf to upgrade.
 Upgrades can be bought multiple times and will increase in price each time.
 The prices are unique per dwarf so when selecting a dwarf the prices will match that.
-The price of the new dwarf upgrade will increase based on the amount of dwarves the user already has.
-The user can choose a name for their new dwarf and a portrait will be chosen at random.
+The price of a new dwarf upgrade will increase based on the amount of dwarves the user already has.
+The user can choose a name for their new dwarf, the name of the first dwarf will be equal to that users username.
 
 ![Upgrading](doc/upgrades_page.png)
 
@@ -97,14 +97,13 @@ When a new dwarf is created a portrait will be chosen at random, each portrait w
 ![Dwarf Portrait](doc/portrait.png)
 
 # The Database
-
 With the current design the amount of models the site uses will be seven.
-For a better overview, the models can be split into three different types.
+For a better overview, the models can be split into three different types:
 
 ### User & Dwarves
 The user model will be a standard user model that Django provides with one extra field for the inventory.
 The inventory has a many to many relationship with a mineral which also has a name and a value.
-For each dwarf the a user will be stored aswell as some stats and the mine that dwarf is currentyl working in.
+For each dwarf the a user will be stored aswell as some stats and the mine that dwarf is currently working in.
 
 ![Databse User & Dwarves](doc/database1.png)
 
