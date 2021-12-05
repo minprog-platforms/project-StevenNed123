@@ -1,4 +1,5 @@
 # Dwarves
+###### by Steven Nederend
 
 Dwarves is a browser based idle game, where users build a team of dwarves to mine various minerals.
 These minerals can be used to upgrade each dwarf, allowing for faster mining and more upgrading.
