@@ -72,7 +72,7 @@ When a mine is not occupied, the user can press the start mining button and will
 
 ### Selection page
 This page will allow users to select a dwarf to either upgrade or start mining.
-![Selection](doc/selection_page.png)
+![Selection](doc/select_page.png)
 
 ### Upgrading page
 Before the user goes to the upgrading page they will be taken to the selection page to select a dwarf to upgrade.
@@ -80,7 +80,7 @@ Upgrades can be bought multiple times and will increase in price each time.
 The prices are unique per dwarf so when selecting a dwarf the prices will match that.
 The price of the new dwarf upgrade will increase based on the amount of dwarves the user already has.
 The user can choose a name for their new dwarf and a portrait will be chosen at random.
-![Upgrading](doc/upgrading_page.png)
+![Upgrading](doc/upgrades_page.png)
 
 # The Database
 
@@ -91,18 +91,18 @@ For a better overview, the models can be split into three different types.
 The user model will be a standard user model that Django provides with one extra field for the inventory.
 The inventory has a many to many relationship with a mineral which also has a name and a value.
 For each dwarf the a user will be stored aswell as some stats and the mine that dwarf is currentyl working in.
-![Databse User & Dwarves](doc/database1_page.png)
+![Databse User & Dwarves](doc/database1.png)
 
 ### Mines
 The mines will use two databases, one to store information about the mine and one to store information about the minerals inside the mine.
 Each mine also has a requirement, wich is the amount of dwarves necesarry to be able to enter this mine.
 The rarity of each mineral determines the chances of getting that mineral with each drop.
-![Mines](doc/database2_page.png)
+![Mines](doc/database2.png)
 
 ### Upgrade
 The upgrades will use two databases, one to store information about the upgrade the other to store information about the upgrades each dwarf has.
 The prices shown of the upgrades will change based on the number of times a dwarf has bought that upgrade.
-![Upgrade](doc/database3_page.png)
+![Upgrade](doc/database3.png)
 
 
 
