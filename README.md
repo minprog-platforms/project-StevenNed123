@@ -13,9 +13,9 @@ On top of that Dwarves should remain a simple game, without it getting bloated b
 
 The hardest parts of this project will probaply be:
 <ul>
-  <li>Fitting every all the stats and information about the different dwarves or mines on the webpages in a clear view.</li>
+  <li>Fitting every stat and piece of information about the different dwarves and mines on the webpages in a clear view.</li>
   <li>Creating a compelling game without live updating the browser.</li>
-  <li>Making the user interface user friendly withouth the use of live updating.</li>
+  <li>Making the interface user friendly without the use of live updating.</li>
 </ul> 
 
 # Sketches
