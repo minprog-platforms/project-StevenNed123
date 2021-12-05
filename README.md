@@ -8,8 +8,8 @@ The game will however require large databases to store different users, dwarves 
 This makes it suitable to work with the Django webframework and make use of the models that Django provides.
 
 There are already a ton of idle games out there, cookie clicker, forager, melvor idle or even social games like clash of clans.
-One thing that Dwarves aims to do is add some simple social elemnts like a leaderboard, the ability to view other players dwarves and maybe the ability to trade mineral.
-On top of that Dwarves should remain a simple game, without it getting bloated by all the different options and gameplay elements.
+One thing that Dwarves aims to do is add some simple social elements like a leaderboard, the ability to view other players dwarves and maybe the ability to trade minerals.
+On top of that Dwarves should remain a simple game, without it getting bloated by a ton of different options and gameplay elements.
 
 The hardest parts of this project will probaply be:
 <ul>
