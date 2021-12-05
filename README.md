@@ -49,18 +49,22 @@ When the user is not logged in, the tabs mining, upgrading, inventory and my dwa
 
 ### All dwarves page
 This is the homepage of the website and allows people to view all the different dwarves and their stats.
+
 ![All Dwarves](doc/all_dwarves_page.png)
 
 ### My dwarves page
 This page will allow users to only see the dwarves that belong to them.
+
 ![My Dwarves](doc/my_dwarves_page.png)
 
 ### Leaderboard page
 This page will allow people to view a leaderboard of users based on the amount of gold in each players inventory.
+
 ![Leaderboard](doc/leaderboard_page.png)
 
 ### Inventory page
 This page will allow users to view the minerals they own, gold being the most important one.
+
 ![Inventory](doc/inventory_page.png)
 
 ### Mining page
@@ -68,10 +72,12 @@ This will allow users to view all available mines, the resources in those mines 
 When a dwarf is currently mining in a mine, it will show the time it takes for their bag to be filled aswell as an option to remove the dwarf from mining.
 The user can only see their own dwarf in the mining page, so two users can mine in the same mine at the same time.
 When a mine is not occupied, the user can press the start mining button and will be taken to a selection of available dwarfs on the selection page.
+
 ![Mining](doc/mining_page.png)
 
 ### Selection page
 This page will allow users to select a dwarf to either upgrade or start mining.
+
 ![Selection](doc/select_page.png)
 
 ### Upgrading page
@@ -80,6 +86,7 @@ Upgrades can be bought multiple times and will increase in price each time.
 The prices are unique per dwarf so when selecting a dwarf the prices will match that.
 The price of the new dwarf upgrade will increase based on the amount of dwarves the user already has.
 The user can choose a name for their new dwarf and a portrait will be chosen at random.
+
 ![Upgrading](doc/upgrades_page.png)
 
 # The Database
@@ -91,17 +98,20 @@ For a better overview, the models can be split into three different types.
 The user model will be a standard user model that Django provides with one extra field for the inventory.
 The inventory has a many to many relationship with a mineral which also has a name and a value.
 For each dwarf the a user will be stored aswell as some stats and the mine that dwarf is currentyl working in.
+
 ![Databse User & Dwarves](doc/database1.png)
 
 ### Mines
 The mines will use two databases, one to store information about the mine and one to store information about the minerals inside the mine.
 Each mine also has a requirement, wich is the amount of dwarves necesarry to be able to enter this mine.
 The rarity of each mineral determines the chances of getting that mineral with each drop.
+
 ![Mines](doc/database2.png)
 
 ### Upgrade
 The upgrades will use two databases, one to store information about the upgrade the other to store information about the upgrades each dwarf has.
 The prices shown of the upgrades will change based on the number of times a dwarf has bought that upgrade.
+
 ![Upgrade](doc/database3.png)
 
 
