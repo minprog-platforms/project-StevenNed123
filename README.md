@@ -82,7 +82,7 @@ The price of the new dwarf upgrade will increase based on the amount of dwarves 
 The user can choose a name for their new dwarf and a portrait will be chosen at random.
 ![Upgrading](doc/upgrading_page.png)
 
-# Databases
+# The Database
 
 With the current design the amount of models the site uses will be seven.
 For a better overview, the models can be split into three different types.
