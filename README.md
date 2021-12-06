@@ -26,10 +26,11 @@ To get a general idea of what the webpages will look like some quick sketches wh
 These sketches also include a trading page which is an additional feature that probaply wont be added, so in future designs this page will not be present.
 Check the design portion for a more detailed overview of the pages.
 
-![Sketch1](doc/sketch1.png =100x)
-<img src="doc/sketch1.png" alt="Sketch1" width="200"/>
+![Sketch1](doc/sketch1.png =200x)
+<img src="doc/sketch1.png" alt="Sketch1" width="400"/>
 
 ![Sketch2](doc/sketch2.png = 100x)
+<img src="doc/sketch2.png" alt="Sketch2" width="400"/>
 
 
 # External Components 
