@@ -20,6 +20,16 @@ The hardest parts of this project will probaply be:
   <li>Fitting in all the different gameplay elements in the timespan given.</li>
 </ul> 
 
+The minimal viable product would need to have most features for the game to work.
+As for the features that could get scrapped for a minimal viable product
+<ul>
+  <li>The first feature that would be scrapped would be the trading page.</li>
+  <li>The other feature would be the minimum dwarf requirements on the mining and upgrades.</li>
+  <li>Being able to buy upgrades multiple times</li>
+  <li>The ability to buy multiple dwarves per user</li>
+</ul> 
+
+
 
 
 # Sketches
