@@ -94,7 +94,6 @@ The user can choose a name for their new dwarf, the name of the first dwarf will
 ### Dwarven portraits
 When a new dwarf is created a portrait will be chosen at random, each portrait will use the same base except for the colors.
 
-![Dwarf Portrait](doc/portrait.png)
 <img src="doc/portrait.png" alt="portrait" width="400"/>
 
 # The Database
