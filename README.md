@@ -27,6 +27,7 @@ These sketches also include a trading page which is an additional feature that p
 Check the design portion for a more detailed overview of the pages.
 
 ![Sketch1](doc/sketch1.png =100x)
+<img src="doc/sketch1.png" alt="Sketch1" width="200"/>
 
 ![Sketch2](doc/sketch2.png = 100x)
 
