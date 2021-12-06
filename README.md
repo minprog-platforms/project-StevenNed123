@@ -20,6 +20,8 @@ The hardest parts of this project will probaply be:
   <li>Fitting in all the different gameplay elements in the timespan given.</li>
 </ul> 
 
+
+
 # Sketches
 
 To get a general idea of what the webpages will look like some quick sketches where made.
