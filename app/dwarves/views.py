@@ -133,10 +133,18 @@ def upgrading(request, name):
         return redirect("select")
     
     upgrades = Upgrade.objects.all()
+    dwarf_upgrades_owned = dwarf.dwarf_upgrades.all()
+    dwarf_upgrades_owned = dwarf_upgrades_owned.exclude(amount_owned = 0)
+    dwarf_upgrades = []
+    for upgrade_owned in dwarf_upgrades_owned:
+        dwarf_upgrades.append(upgrade_owned.upgrade)
+
     return render(request, "dwarves/upgrading.html",{
         "page_title" : f"Upgrading {name}",
         "dwarf" : dwarf,
         "upgrades" : upgrades,
+        "dwarf_upgrades_owned" : dwarf_upgrades_owned,
+        "dwarf_upgrades" : dwarf_upgrades
     })
 
 @login_required(login_url='login')
