@@ -7,9 +7,9 @@ def time_remaining(job):
     time = timezone.now() - job.start_time
     time = time.seconds / 60
     rate = job.mine.rate / 60
-    remainder = job.dwarf.capacity / rate - time
+    remainder = job.dwarf.capacity / (rate * job.dwarf.speed) - time
     if remainder <= 0:
-        return "Bag is full"
+        return 0
     else: 
         return round(remainder,1)
 
@@ -18,10 +18,10 @@ def progress(job):
     time = timezone.now() - job.start_time
     time = time.seconds / 60
     rate = job.mine.rate / 60
-    if rate * time > job.dwarf.capacity:
+    if rate * time * job.dwarf.speed > job.dwarf.capacity:
         return job.dwarf.capacity
     else:
-        return round(rate * time)
+        return round(rate * job.dwarf.speed * time)
 
 @register.filter(name='get_effect')
 def get_effect(upgrade):
@@ -36,7 +36,7 @@ def get_effect(upgrade):
 
 @register.filter(name='cost_complete')
 def cost_complete(value, amount):
-    new_value = value * (1.50 ** amount)
+    new_value = value * (1.25 ** amount)
     new_value = round(new_value)
     return new_value
 

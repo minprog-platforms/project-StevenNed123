@@ -7,7 +7,8 @@ from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.utils import timezone
 
 
-possible_minerals = [('Gold', 'gold'), ('Iron', 'iron') ,('Marble', 'marble'), ('Quartz', 'quartz')]
+possible_minerals = [('Gold', 'gold'), ('Clay', 'clay'), ('Iron', 'iron'), ('Coal', 'coal'), ('Tin', 'tin'), ('Zinc', 'zinc'),
+                    ('Copper', 'copper'), ('Silver', 'silver'), ("Mithril", "mithril"), ('Marble', 'marble'), ('Quartz', 'quartz')]
 
 class User(AbstractUser):
     gold_obtained = models.IntegerField(default=0)

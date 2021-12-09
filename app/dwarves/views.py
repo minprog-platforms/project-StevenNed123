@@ -189,7 +189,7 @@ def check_cost(user, upgrade, amount_owned):
     return True
 
 def cost_complete(value, amount):
-    new_value = value * (1.50 ** amount)
+    new_value = value * (1.25 ** amount)
     new_value = round(new_value)
     return new_value
 
