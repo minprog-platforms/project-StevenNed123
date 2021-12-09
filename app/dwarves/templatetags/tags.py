@@ -34,6 +34,12 @@ def get_effect(upgrade):
         effect += f"+{upgrade.discovery} Discovery"
     return effect
 
+@register.filter(name='cost_complete')
+def cost_complete(value, amount):
+    new_value = value * (1.50 ** amount)
+    new_value = round(new_value)
+    return new_value
+
 
 
 

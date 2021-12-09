@@ -26,6 +26,7 @@ def all_dwarves(request):
         "dwarves" : dwarves_list,
     })
 
+@login_required(login_url='login')
 def my_dwarves(request):
     dwarves_list = request.user.user_dwarfs.all()
     return render(request, "dwarves/all_dwarves.html",{
@@ -39,7 +40,7 @@ def leaderboard(request):
         "users" : users
     })
 
-
+@login_required(login_url='login')
 def mining(request):
     mines = Mine.objects.all()
     active_jobs = Job.objects.filter(dwarf__in=request.user.user_dwarfs.all())
@@ -124,7 +125,7 @@ def calculate_chance(minerals, discovery):
 class SelectionForm(forms.Form):
     dwarf = forms.CharField() 
 
-
+@login_required(login_url='login')
 def upgrading(request, name):
     try:
         dwarf = request.user.user_dwarfs.get(name = name)
@@ -138,8 +139,61 @@ def upgrading(request, name):
         "upgrades" : upgrades,
     })
 
+@login_required(login_url='login')
+def buy_upgrade(request, name, upgrade):
+    if request.method == "POST":
+        dwarf = request.user.user_dwarfs.get(name = name)
+        upgrade = Upgrade.objects.get(name=upgrade)
+
+        try:
+            new_upgrade = Upgrade_owned.objects.get(dwarf=dwarf, upgrade=upgrade)
+        except ObjectDoesNotExist:
+            new_upgrade = Upgrade_owned(dwarf=dwarf, upgrade=upgrade)
+
+        if check_cost(request.user, upgrade, new_upgrade.amount_owned):
+            new_upgrade.amount_owned += 1
+            new_upgrade.save()
+            dwarf.speed = round(dwarf.speed + upgrade.speed, 2)
+            dwarf.capacity += upgrade.capacity
+            dwarf.discovery = round(dwarf.discovery + upgrade.discovery, 2)
+            dwarf.save()
+            messages.success(request, f"Succesfully bought: {upgrade.name}!")
+        else:
+            messages.error(request, f"You dont have enough Minerals for: {upgrade.name}!")
+        
+    return redirect("upgrading", name)
+
+def check_cost(user, upgrade, amount_owned):
+    price = upgrade.cost.all()
+    inventory = user.inventory.all()
+    # check if the user can pay for the upgrade
+    for mineral in price:
+        try:
+            user_mineral = inventory.get(name=mineral.name)
+        except ObjectDoesNotExist:
+            return False
+        if user_mineral.value < cost_complete(mineral.value, amount_owned):
+            return False
+    for mineral in price:
+        user_mineral = inventory.get(name=mineral.name)
+        user_mineral.value = user_mineral.value - cost_complete(mineral.value, amount_owned)
+        user_mineral.save()
+    return True
+
+def cost_complete(value, amount):
+    new_value = value * (1.50 ** amount)
+    new_value = round(new_value)
+    return new_value
 
 
+
+
+    
+
+
+
+
+@login_required(login_url='login')
 def select(request):
     dwarves_list = request.user.user_dwarfs.all()
     return render(request, "dwarves/select.html",{
@@ -147,6 +201,7 @@ def select(request):
         "dwarves" : dwarves_list
     })
 
+@login_required(login_url='login')
 def inventory(request):
     user_inventory = request.user.inventory.all()
     return render(request, "dwarves/inventory.html", {

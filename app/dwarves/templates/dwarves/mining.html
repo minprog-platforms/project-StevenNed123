@@ -13,6 +13,7 @@
 {% endif %}
 
 {% for mine in mines %}
+<div class="container">
     <h3>{{ mine.name }}</h3>
     <ul>
     {% for mineral in mine.minerals.all %}
@@ -49,6 +50,7 @@
             </form>
 
         {% endif %}
-
+</div>
 {% endfor %}
+
 {% endblock %}
