@@ -13,6 +13,7 @@
 {% endif %}
 
 {% for mine in mines %}
+{% if mine.requirement <= dwarves_count %}
 <div class="container">
     <h3>{{ mine.name }}</h3>
     <ul>
@@ -51,6 +52,7 @@
 
         {% endif %}
 </div>
+{% endif %}
 {% endfor %}
 
 {% endblock %}

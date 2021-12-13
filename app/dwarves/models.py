@@ -46,6 +46,7 @@ class Upgrade(models.Model):
     requirement = models.IntegerField(default=0)
     def __str__(self):
         return f"{self.name}"
+        
 
 class Upgrade_owned(models.Model):
     dwarf = ForeignKey(Dwarf, related_name="dwarf_upgrades", on_delete=CASCADE)

@@ -19,6 +19,7 @@
     {% endif %}
 
     {% for upgrade in upgrades %}
+    {% if upgrade.requirement <= dwarves_count %}
     <div class="containter">
         <h3> {{ upgrade.name }} </h3>
         Effect: {{ upgrade|get_effect }}
@@ -46,7 +47,27 @@
             <input type="submit" name={{ upgrade.name }} value="Buy Upgrade">
         </form>
     </div>
+    {% endif %}
     {% endfor %}
+
+    <h1>Get new dwarf</h1>
+    {% for upgrade in new_dwarf_upgrades %}
+    {% if upgrade.requirement == dwarves_count %}
+        Cost: 
+        <ul>
+            {% for mineral in upgrade.cost.all %}
+                <li>{{ mineral.name }} : {{ mineral.value }}</li>
+
+            {% endfor %}
+        </ul>
+        <form action="{% url 'new_dwarf' dwarf.name upgrade.name %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" name={{ upgrade.name }} value="Get new dwarf">
+        </form>
+    {% endif %}
+    {% endfor %}
+
 
 
 

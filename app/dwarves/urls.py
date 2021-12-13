@@ -12,6 +12,7 @@ urlpatterns = [
     path("mining", views.mining, name="mining"),
     path("upgrading/<str:name>", views.upgrading, name="upgrading"),
     path("upgrading/<str:name>/<str:upgrade>", views.buy_upgrade, name="buy_upgrade"),
+    path("new_dwarf_upgrading/<str:name>/<str:upgrade>", views.new_dwarf, name="new_dwarf"),
     path("inventory", views.inventory, name="inventory"),
     path("start_mining/<str:name>", views.start_mining, name="start_mining"),
     path("stop_mining/<str:name>", views.stop_mining, name="stop_mining"),
