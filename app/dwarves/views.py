@@ -85,7 +85,7 @@ def stop_mining(request, name):
                 mineral = Mineral(name=drop[0], user=request.user)
             mineral.value += drop[1]
             mineral.save()
-            if drop[0] == "gold":
+            if drop[0] == "Gold":
                 request.user.gold_obtained += drop[1]
                 request.user.save()
             if drop[1] != 0:
@@ -222,7 +222,7 @@ def cost_complete(value, amount):
 
 
 
-    
+
 
 
 

@@ -1,6 +1,6 @@
 body {
     padding: 10px;
-    background-color:wheat !important;
+    background-color:rgb(186, 139, 99) !important;
 }
 
 img {
@@ -18,14 +18,14 @@ img {
 .vertical-nav{
     float: left !important;
   }
-
+/*
 .main-portrait{
     float: left;  
     margin-right: 50px;
 }
-
+*/
 #mainbox{
-    background-color:peachpuff !important;
+    background-color:rgb(15, 92, 179) !important;
 }
 
 .selection-link{

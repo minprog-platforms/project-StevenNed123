@@ -17,6 +17,14 @@
         {% endif %}
     {% endfor %}
     {% endif %}
+    <div style="float : right !important">
+        <ul>
+                <h3>Inventory:</h3>
+        {% for item in user.inventory.all %}
+            <li>{{ item.name }}: {{ item.value }}</li>
+        {% endfor %}
+        </ul>
+    </div>
 
     {% for upgrade in upgrades %}
     {% if upgrade.requirement <= dwarves_count %}

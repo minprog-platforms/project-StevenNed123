@@ -3,19 +3,27 @@
 
 {% block body %}
 <h1>{{ page_title }}</h1>
-
-{% for dwarf in dwarves %}
-<div class="container shadow-lg p-3 mb-5 bg-body rounded", id=mainbox> 
-    <img class="main-portrait" src="{% static '/dwarves/media/'|add:dwarf.portrait %}" alt="potrait{{ dwarf.portrait }}4"/>
-    <ul>
-        <li>Name: {{ dwarf.name }}</li>
-        <li>User: {{ dwarf.user }}</li>
-        <li>Speed: {{dwarf.speed}}</li>
-        <li>Capacity: {{dwarf.capacity}}</li>
-        <li>Discovery: {{dwarf.discovery}}</li>
-    </ul>
+    <div class="row">
+    {% for dwarf in dwarves %}
+    <div class="col" style="margin:2%; padding:1%; border-style:ridge; border-radius:5px; 
+    box-shadow: 10px 10px; background-color:rgba(9, 88, 33, 0.568)">
+        <div class="row" >
+            <div class="col">
+            <img class="main-portrait" src="{% static '/dwarves/media/'|add:dwarf.portrait %}" alt="potrait{{ dwarf.portrait }}"
+            style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"/>
+            </div>
+            <div class="col" style="font-size: larger;">
+                <br> Name: {{ dwarf.name }} <br> <br>
+                User: {{ dwarf.user }}
+            </div>
+            <div class="col" style="font-size: larger;">
+                 Speed: {{dwarf.speed}} <br>
+                <br> Capacity: {{dwarf.capacity}} <br>
+                <br> Discovery: {{dwarf.discovery}}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
-
 
 {% endblock %}
