@@ -35,7 +35,7 @@ def my_dwarves(request):
     })
 
 def leaderboard(request):
-    users = User.objects.all()
+    users = User.objects.order_by("-gold_obtained")
     return render(request, "dwarves/leaderboard.html",{
         "users" : users
     })
@@ -89,7 +89,7 @@ def stop_mining(request, name):
                 request.user.gold_obtained += drop[1]
                 request.user.save()
             if drop[1] != 0:
-                messages.info(request, f"You have mined {drop[1]} {drop[0]}!")
+                messages.info(request, f"You mined {drop[1]} {drop[0]}!")
 
     return redirect("mining")
 

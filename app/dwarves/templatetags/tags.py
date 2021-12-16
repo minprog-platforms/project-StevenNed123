@@ -27,11 +27,11 @@ def progress(job):
 def get_effect(upgrade):
     effect = ""
     if upgrade.speed != 0:
-        effect += f"+{upgrade.speed} Mining Speed"
+        effect += f" +{upgrade.speed} Speed"
     if upgrade.capacity != 0:
-        effect += f"+{upgrade.capacity} Capacity"
+        effect += f" +{upgrade.capacity} Capacity"
     if upgrade.discovery != 0:
-        effect += f"+{upgrade.discovery} Discovery"
+        effect += f" +{upgrade.discovery} Discovery"
     return effect
 
 @register.filter(name='cost_complete')
@@ -40,6 +40,12 @@ def cost_complete(value, amount):
     new_value = round(new_value)
     return new_value
 
+@register.filter(name='get_mine_name')
+def get_mine_name(name):
+    if name.split(' ', 1)[0].lower() == "the":
+        return name.split(' ', 1)[1]
+    else:
+        return name.split(' ', 1)[0]
 
 
 

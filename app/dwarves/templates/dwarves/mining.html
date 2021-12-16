@@ -1,43 +1,50 @@
 {% extends "dwarves/layout.html" %}
 {% load tags %}
 {% block body %}
+{% load static %}
 <h1>Mining</h1>
 
-<div class="container">
+<div style="margin-left:4%">
 {% if messages %}
 {% for message in messages %}
-    <div class="alert alert-info" role="alert">
-        {{ message }}
+    <div class="alert alert-warning" role="alert">
+        {{ message }} 
     </div>
 {% endfor %}
 {% endif %}
+</div>
 
+<div class="row">
 {% for mine in mines %}
 {% if mine.requirement <= dwarves_count %}
-<div class="container">
-    <h3>{{ mine.name }}</h3>
+<div class="col-md-12">
+    <div id={{mine.name|get_mine_name}} style="margin:2%; padding:1%; border-style:ridge; border-radius:5px; 
+    box-shadow: 10px 10px; font-size:larger;">
+    <div style=" border-bottom:2px rgb(34, 33, 33) solid"><h2>{{ mine.name }}</h2></div>
     <ul>
     {% for mineral in mine.minerals.all %}
-        <li>{{ mineral.rarity }} : {{ mineral.name}}</li>
+        <li>{{ mineral.rarity }} : {{ mineral.name}}
+            <img src="{% static '/dwarves/media/'|add:mineral.name|add:'.png' %}" alt="{{ mineral.name }}"
+                    style="height:50px; width:50px">
+        </li>
     {% endfor %}
     </ul>
-    {{ mine.rate }} drops/hour <br>
+    {{ mine.rate }} drops/hour <br> <br>
 
         {% if mine in active_mines %}
 
             {% for job in active_jobs %}
                 {% if job.mine == mine %}
-                    {{ job.dwarf.name }} is currently mining:
-                    {{ job|progress }} / {{job.dwarf.capacity}} {{ job|time_remaining }} minutes remaining
+                    <strong>{{ job.dwarf.name }} </strong>is currently mining: {{ job|progress }} / {{job.dwarf.capacity}} <br>
+                    {{ job|time_remaining }} minutes remaining <br>
                     <form action="{% url 'stop_mining' mine.name %}" method="post">
                         {% csrf_token %}
-                        <input type="submit" name={{ mine.name }} value="Stop Mining">
+                        <input type="submit" value="Stop Mining" class="button1">
                     </form>
                 {% endif %}
             {% endfor %}
 
         {% else %}
-
             <form action="{% url 'start_mining' mine.name %}" method="post">
                 {% csrf_token %}
                 <label for="dwarf">Choose a Dwarf:</label>
@@ -47,12 +54,15 @@
                     {% endfor %}
                 </select>
 
-                <input type="submit" name={{ mine.name }} value="Start Mining">
+                <input type="submit" class="button1" value="Start Mining" 
+                style="background-color: rgba(185, 185, 185, 0.658); color:black; border:2px solid">
             </form>
-
         {% endif %}
+    </div>
 </div>
 {% endif %}
 {% endfor %}
+</div>
+
 
 {% endblock %}

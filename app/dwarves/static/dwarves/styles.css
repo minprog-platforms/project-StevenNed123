@@ -1,6 +1,7 @@
 body {
     padding: 10px;
     background-color:rgb(186, 139, 99) !important;
+    color: rgb(15, 15, 15);
 }
 
 img {
@@ -18,12 +19,7 @@ img {
 .vertical-nav{
     float: left !important;
   }
-/*
-.main-portrait{
-    float: left;  
-    margin-right: 50px;
-}
-*/
+  
 #mainbox{
     background-color:rgb(15, 92, 179) !important;
 }
@@ -32,4 +28,52 @@ img {
     color: inherit !important;
     text-decoration: inherit !important;
 }
+
+.selection-link:hover{
+    opacity: 0.80;
+}
+
+.button1 {
+    background-color: rgba(185, 185, 185, 0.658); 
+    color:black; 
+    border:2px solid;
+}
+
+.button1:hover {
+    background-color: #555555 !important;
+    border-color: #363636 !important;
+  }
+
+#Belguard {
+    background-color:rgb(124, 127, 129);
+}
+
+#Crooked {
+    background-color:rgb(139, 104, 58);
+}
+
+#Seaside {
+    background-color:rgb(59, 133, 134);
+}
+
+#Blackwater {
+    background-color: 	rgb(72, 80, 69); 
+}
+
+#Wetlands {
+    background-color:rgb(29, 107, 88);
+}
+
+#GrimWood {
+    background-color:rgb(90, 83, 89);
+}
+
+#Legacy {
+    background-color:rgb(102, 147, 177);
+}
+
+#El {
+    background-color:rgb(211, 218, 84);
+}
+
 

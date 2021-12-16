@@ -1,11 +1,13 @@
 {% extends "dwarves/layout.html" %}
 {% load tags %}
+{% load static %}
 
 {% block body %}
 <h1>{{ page_title }}</h1>
 
     {% if messages %}
     {% for message in messages %}
+    <div style="margin-left:4%">
         {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
             <div class="alert alert-danger" role="alert">
                 {{ message }}
@@ -15,67 +17,91 @@
                 {{ message }}
             </div>
         {% endif %}
+    </div>
     {% endfor %}
     {% endif %}
-    <div style="float : right !important">
+
+    <div style="float : right">
+        <h3>Inventory:</h3>
         <ul>
-                <h3>Inventory:</h3>
         {% for item in user.inventory.all %}
             <li>{{ item.name }}: {{ item.value }}</li>
+            <img src="{% static '/dwarves/media/'|add:item.name|add:'.png' %}" alt="{{ item.name }}"
+                    style="height:60px; width:60">
         {% endfor %}
         </ul>
     </div>
 
-    {% for upgrade in upgrades %}
-    {% if upgrade.requirement <= dwarves_count %}
-    <div class="containter">
-        <h3> {{ upgrade.name }} </h3>
-        Effect: {{ upgrade|get_effect }}
-        <br>Cost: 
-        {% if upgrade in dwarf_upgrades %}
-            {% for upgrade_owned in dwarf_upgrades_owned %}
-                {% if upgrade == upgrade_owned.upgrade %}
-                    <ul>
-                        {% for mineral in upgrade.cost.all %}
-                            <li>{{ mineral.name }} : {{ mineral.value|cost_complete:upgrade_owned.amount_owned }}</li>
-
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            <ul>
-                {% for mineral in upgrade.cost.all %}
-                    <li>{{ mineral.name }} : {{ mineral.value }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        <form action="{% url 'buy_upgrade' dwarf.name upgrade.name %}" method="post">
-            {% csrf_token %}
-            <input type="submit" name={{ upgrade.name }} value="Buy Upgrade">
-        </form>
-    </div>
-    {% endif %}
-    {% endfor %}
-
-    <h1>Get new dwarf</h1>
-    {% for upgrade in new_dwarf_upgrades %}
-    {% if upgrade.requirement == dwarves_count %}
-        Cost: 
+<div class="row">
+{% for upgrade in upgrades %}
+{% if upgrade.requirement <= dwarves_count %}
+    <div class="col-md-6">
+    <div style="margin:2%; padding:1%; border-style:ridge; border-radius:5px; 
+        box-shadow: 10px 10px; background-color:rgb(124, 127, 129); font-size:larger">
+    <div style=" border-bottom:3px rgb(0, 0, 0) outset"><h3> {{ upgrade.name }} </h3></div>
+    Effect:{{ upgrade|get_effect }}
+    <br>Cost: 
+    {% if upgrade in dwarf_upgrades %}
+        {% for upgrade_owned in dwarf_upgrades_owned %}
+            {% if upgrade == upgrade_owned.upgrade %}
+                <ul>
+                    {% for mineral in upgrade.cost.all %}
+                        <li>{{ mineral.name }} : {{ mineral.value|cost_complete:upgrade_owned.amount_owned }}
+                            <img src="{% static '/dwarves/media/'|add:mineral.name|add:'.png' %}" alt="{{ mineral.name }}"
+                            style="height:50px; width:50px">
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    {% else %}
         <ul>
             {% for mineral in upgrade.cost.all %}
-                <li>{{ mineral.name }} : {{ mineral.value }}</li>
-
+                <li>{{ mineral.name }} : {{ mineral.value }}
+                    <img src="{% static '/dwarves/media/'|add:mineral.name|add:'.png' %}" alt="{{ mineral.name }}"
+                    style="height:50px; width:50px">
+                </li>
             {% endfor %}
         </ul>
-        <form action="{% url 'new_dwarf' dwarf.name upgrade.name %}" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" name={{ upgrade.name }} value="Get new dwarf">
-        </form>
     {% endif %}
-    {% endfor %}
+    <form action="{% url 'buy_upgrade' dwarf.name upgrade.name %}" method="post">
+        {% csrf_token %}
+        <input type="submit" name={{ upgrade.name }} class=button1 value="Buy Upgrade">
+    </form>
+    </div>
+    </div>
+{% endif %}
+{% endfor %}
 
+{% if dwarves_count == 4 %}
+<h2 style="margin-top:30px">You are at the maximum amount of dwarfs!</h2>
+{% else %}
+<h1 style="margin-top:1%">Get new dwarf</h1>
+{% for upgrade in new_dwarf_upgrades %}
+{% if upgrade.requirement == dwarves_count %}
+    <div class="col-12">
+    <div style="margin:2%; padding:1%; border-style:ridge; border-radius:5px; 
+    box-shadow: 10px 10px; background-color:rgb(112,128,144, 0.80); font-size:larger">
+    Cost:   
+    <ul>
+        {% for mineral in upgrade.cost.all %}
+            <li>{{ mineral.name }} : {{ mineral.value }}
+                <img src="{% static '/dwarves/media/'|add:mineral.name|add:'.png' %}" alt="{{ mineral.name }}"
+                style="height:50px; width:50px">
+            </li>
+        {% endfor %}
+    </ul>
+    <form action="{% url 'new_dwarf' dwarf.name upgrade.name %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" class="button1" name={{ upgrade.name }} value="Get new dwarf">
+    </form>
+    </div>
+    </div>
+{% endif %}
+{% endfor %}
+{% endif %}
+</div>
 
 
 
