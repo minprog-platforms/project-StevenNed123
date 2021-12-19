@@ -1,7 +1,12 @@
 body {
-    padding: 10px;
-    background-color:rgb(186, 139, 99) !important;
+    background-color:rgb(160, 137, 117) !important;
     color: rgb(15, 15, 15);
+}
+
+.page-header {
+    background-color: rgb(126, 92, 63);
+    color:black; 
+    border:1px solid;
 }
 
 img {
@@ -37,6 +42,17 @@ img {
     background-color: rgba(185, 185, 185, 0.658); 
     color:black; 
     border:2px solid;
+}
+
+.nav-link {
+    background-color: rgb(164,116,73) !important; 
+    color:black !important; 
+    border:2px solid !important;
+}
+
+.nav-link:hover{
+    background-color: rgb(80, 51, 26) !important
+
 }
 
 .button1:hover {

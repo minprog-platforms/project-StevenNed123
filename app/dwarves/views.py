@@ -67,29 +67,38 @@ def start_mining(request, name):
             dwarf_name = form.cleaned_data["dwarf"]
             dwarf = request.user.user_dwarfs.get(name = dwarf_name)
             mine = Mine.objects.get(name=name)
-            new_job = Job(start_time = timezone.now(), dwarf=dwarf, mine=mine)
-            new_job.save()
+            try:
+                Job.objects.get(dwarf__in=request.user.user_dwarfs.all(), mine=mine)
+            except ObjectDoesNotExist:
+                try:
+                    Job.objects.get(dwarf=dwarf)
+                except ObjectDoesNotExist:
+                    new_job = Job(start_time = timezone.now(), dwarf=dwarf, mine=mine)
+                    new_job.save()
     return redirect("mining")
 
 def stop_mining(request, name):
     if request.method == "POST":
         active_jobs = Job.objects.filter(dwarf__in=request.user.user_dwarfs.all())
-        current_job = active_jobs.get(mine=Mine.objects.get(name=name))
-        drops = get_drops(current_job)
-        current_job.delete()
+        try:
+            current_job = active_jobs.get(mine=Mine.objects.get(name=name))
+            drops = get_drops(current_job)
+            current_job.delete()
 
-        for drop in drops:
-            try:
-                mineral = request.user.inventory.get(name=drop[0])
-            except ObjectDoesNotExist:
-                mineral = Mineral(name=drop[0], user=request.user)
-            mineral.value += drop[1]
-            mineral.save()
-            if drop[0] == "Gold":
-                request.user.gold_obtained += drop[1]
-                request.user.save()
-            if drop[1] != 0:
-                messages.info(request, f"You mined {drop[1]} {drop[0]}!")
+            for drop in drops:
+                try:
+                    mineral = request.user.inventory.get(name=drop[0])
+                except ObjectDoesNotExist:
+                    mineral = Mineral(name=drop[0], user=request.user)
+                mineral.value += drop[1]
+                mineral.save()
+                if drop[0] == "Gold":
+                    request.user.gold_obtained += drop[1]
+                    request.user.save()
+                if drop[1] != 0:
+                    messages.info(request, f"You mined {drop[1]} {drop[0]}!")
+        except ObjectDoesNotExist:
+            pass
 
     return redirect("mining")
 
@@ -158,7 +167,7 @@ def new_dwarf(request, upgrade, name):
     if request.method == "POST":
         upgrade = Upgrade.objects.get(name=upgrade)
         form = SelectionForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and upgrade.requirement == request.user.user_dwarfs.count():
             dwarf_name = form.cleaned_data["dwarf"]
             dwarf_names = request.user.user_dwarfs.all().values_list("name",flat=True)
             if dwarf_name.lower() not in [x.lower() for x in dwarf_names]:
@@ -215,7 +224,7 @@ def check_cost(user, upgrade, amount_owned):
     return True
 
 def cost_complete(value, amount):
-    new_value = value * (1.25 ** amount)
+    new_value = value * (1.50 ** amount)
     new_value = round(new_value)
     return new_value
 
