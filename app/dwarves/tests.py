@@ -1,3 +1,4 @@
 from django.test import TestCase
 
-# Create your tests here.
+
+# no tests have been created for this project

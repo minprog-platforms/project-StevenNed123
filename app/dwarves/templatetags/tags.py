@@ -1,7 +1,11 @@
 from django import template
 from django.utils import timezone
+
+
 register = template.Library()
 
+
+# filter to calculate the time before a job is finished
 @register.filter(name='time_remaining')
 def time_remaining(job):
     time = timezone.now() - job.start_time
@@ -13,6 +17,8 @@ def time_remaining(job):
     else: 
         return round(remainder,1)
 
+
+# filter to calculate the progress of a job
 @register.filter(name='progress')
 def progress(job):
     time = timezone.now() - job.start_time
@@ -23,6 +29,8 @@ def progress(job):
     else:
         return round(rate * job.dwarf.speed * time)
 
+
+# formats the effect of an upgrade nicely
 @register.filter(name='get_effect')
 def get_effect(upgrade):
     effect = ""
@@ -34,12 +42,16 @@ def get_effect(upgrade):
         effect += f" +{upgrade.discovery} Discovery"
     return effect
 
+
+# calculates the cost based on the amount of upgrades the dwarf already has
 @register.filter(name='cost_complete')
 def cost_complete(value, amount):
     new_value = value * (1.50 ** amount)
     new_value = round(new_value)
     return new_value
 
+
+# gets the actual name of the mine (skipping the word "the")
 @register.filter(name='get_mine_name')
 def get_mine_name(name):
     if name.split(' ', 1)[0].lower() == "the":

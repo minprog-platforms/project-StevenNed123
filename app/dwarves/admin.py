@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import User, Mineral, Mine, Dwarf, Upgrade, Upgrade_owned, Job
 
+
+# adding inline fields to view minerals
 class MineralInline(admin.TabularInline):
     model = Mineral
 
@@ -20,7 +22,7 @@ class UserAdmin(admin.ModelAdmin):
     ]
 
 
-# Register your models here.
+# registering models
 admin.site.register(User, UserAdmin)
 admin.site.register(Mineral)
 admin.site.register(Mine, MineAdmin)

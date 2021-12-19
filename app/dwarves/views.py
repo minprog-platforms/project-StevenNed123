@@ -1,24 +1,24 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.forms.fields import CharField
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.forms import ModelForm 
 from django import forms
 from django.utils import timezone
 from django.contrib import messages
-from django.db.models import Max
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
-from random import random
 from random import randint
+from .util import check_cost, get_drops
+from .models import User, Mineral, Mine, Dwarf, Upgrade, Upgrade_owned, Job
 
-from .models import User, Mineral, Mine, Dwarf, Upgrade, Upgrade_owned, Job, possible_minerals
 
+# defining the amount of dwarf portraits (found in static/dwarves/media)
 amount_portraits = 20
 
+
+# renders the all dwarves page
 def all_dwarves(request):
     dwarves_list = Dwarf.objects.all()
     return render(request, "dwarves/all_dwarves.html",{
@@ -26,6 +26,8 @@ def all_dwarves(request):
         "dwarves" : dwarves_list,
     })
 
+
+# renders the all dwarves page with only the users dwarves
 @login_required(login_url='login')
 def my_dwarves(request):
     dwarves_list = request.user.user_dwarfs.all()
@@ -34,21 +36,29 @@ def my_dwarves(request):
         "dwarves" : dwarves_list
     })
 
+
+# renders the leaderboard page
 def leaderboard(request):
     users = User.objects.order_by("-gold_obtained")
     return render(request, "dwarves/leaderboard.html",{
         "users" : users
     })
 
+
+# renders the mining page
 @login_required(login_url='login')
 def mining(request):
     mines = Mine.objects.all()
+
+    # grab all the jobs that belong to one of the users dwarfs
     active_jobs = Job.objects.filter(dwarf__in=request.user.user_dwarfs.all())
     active_mines = []
     active_dwarves = []
     for job in active_jobs:
         active_dwarves.append(job.dwarf.name)
         active_mines.append(job.mine)
+
+    # grab all the dwarves the users dwarves without jobs
     inactive_dwarves = request.user.user_dwarfs.exclude(name__in=active_dwarves)
     dwarves_count = request.user.user_dwarfs.all().count()
 
@@ -60,6 +70,7 @@ def mining(request):
         "dwarves_count" : dwarves_count,
     })
 
+# handle the start mining posts
 def start_mining(request, name):
     if request.method == "POST":
         form = SelectionForm(request.POST)
@@ -67,9 +78,13 @@ def start_mining(request, name):
             dwarf_name = form.cleaned_data["dwarf"]
             dwarf = request.user.user_dwarfs.get(name = dwarf_name)
             mine = Mine.objects.get(name=name)
+
+            # only create a new job if that mine doesn't have a job
             try:
                 Job.objects.get(dwarf__in=request.user.user_dwarfs.all(), mine=mine)
             except ObjectDoesNotExist:
+
+                # only create a new job if that dwarf does not already have a job
                 try:
                     Job.objects.get(dwarf=dwarf)
                 except ObjectDoesNotExist:
@@ -77,80 +92,66 @@ def start_mining(request, name):
                     new_job.save()
     return redirect("mining")
 
+# handle the stop mining posts
 def stop_mining(request, name):
     if request.method == "POST":
         active_jobs = Job.objects.filter(dwarf__in=request.user.user_dwarfs.all())
+
+        # try to get the current job if that job still exists else do nothing
         try:
             current_job = active_jobs.get(mine=Mine.objects.get(name=name))
+
+            # calculate the drops via the get_drops util function
             drops = get_drops(current_job)
             current_job.delete()
-
             for drop in drops:
-                try:
-                    mineral = request.user.inventory.get(name=drop[0])
-                except ObjectDoesNotExist:
-                    mineral = Mineral(name=drop[0], user=request.user)
-                mineral.value += drop[1]
-                mineral.save()
-                if drop[0] == "Gold":
-                    request.user.gold_obtained += drop[1]
-                    request.user.save()
                 if drop[1] != 0:
+
+                    # create the mineral if it does not exist yet
+                    try:
+                        mineral = request.user.inventory.get(name=drop[0])
+                    except ObjectDoesNotExist:
+                        mineral = Mineral(name=drop[0], user=request.user)
+                    mineral.value += drop[1]
+                    mineral.save()
+
+                    # if the mineral is gold update gold_obtained
+                    if drop[0] == "Gold":
+                        request.user.gold_obtained += drop[1]
+                        request.user.save()
                     messages.info(request, f"You mined {drop[1]} {drop[0]}!")
         except ObjectDoesNotExist:
             pass
 
     return redirect("mining")
 
-# the algorithm to calculate the drops
-def get_drops(job):
-    time = (timezone.now() - job.start_time).seconds / 60
-    drop_rate = job.mine.rate / 60
-    minerals = job.mine.minerals.all()
-    drops = []
-    chances = calculate_chance(minerals, job.dwarf.discovery)
-    total_value = 0
-    for mineral in minerals:
-        value = round((drop_rate * time * job.dwarf.speed) * chances[mineral.name])
-        drops.append([mineral.name, value])
-        total_value += value
-    # shrink down drops if outside of capacity
-    if job.dwarf.capacity < total_value:
-        factor = job.dwarf.capacity/total_value
-        drops = [[drop[0], round(drop[1]*factor)] for drop in drops]
-    return drops
 
-def calculate_chance(minerals, discovery):
-    drop_table = {"common" : 0.68, "uncommon" : 0.25 * ((discovery - 1) * 0.5 + discovery),
-                    "rare" : 0.06 * discovery, "very_rare" : 0.01 * discovery}
-    chances = {}
-    total_chance = 0
-    for mineral in minerals:
-        chance = drop_table[mineral.rarity] * random()
-        chances[mineral.name] = chance
-        total_chance += chance
-    # standardize the chances to sum to 1
-    for name in chances:
-        chances[name] = chances[name] / total_chance
-    return chances
-
+# a simple selectionform to fill user submitted input
 class SelectionForm(forms.Form):
     dwarf = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder":"Name of new Dwarf"})) 
 
+
+# render the upgrade page
 @login_required(login_url='login')
 def upgrading(request, name):
+
+    # try to get the users dwarf else redirect user to selection page
     try:
         dwarf = request.user.user_dwarfs.get(name = name)
     except ObjectDoesNotExist:
         return redirect("select")
+
+    # filter out the normal upgrades from the new dwarf upgrades
     upgrades = Upgrade.objects.exclude(name__istartswith="new_dwarf")
     new_dwarf_upgrades = Upgrade.objects.filter(name__istartswith="new_dwarf")
+
     dwarf_upgrades_owned = dwarf.dwarf_upgrades.all()
     dwarf_upgrades_owned = dwarf_upgrades_owned.exclude(amount_owned = 0)
     dwarf_upgrades = []
     for upgrade_owned in dwarf_upgrades_owned:
         dwarf_upgrades.append(upgrade_owned.upgrade)
     dwarves_count = request.user.user_dwarfs.all().count()
+
     return render(request, "dwarves/upgrading.html",{
         "page_title" : f"Upgrading {name}",
         "dwarf" : dwarf,
@@ -162,6 +163,8 @@ def upgrading(request, name):
         "form" : SelectionForm(),
     })
 
+
+# handle the stop mining posts
 @login_required(login_url='login')
 def new_dwarf(request, upgrade, name):
     if request.method == "POST":
@@ -169,8 +172,12 @@ def new_dwarf(request, upgrade, name):
         form = SelectionForm(request.POST)
         if form.is_valid() and upgrade.requirement == request.user.user_dwarfs.count():
             dwarf_name = form.cleaned_data["dwarf"]
+
+            # check if the user has a dwarf with the same name
             dwarf_names = request.user.user_dwarfs.all().values_list("name",flat=True)
             if dwarf_name.lower() not in [x.lower() for x in dwarf_names]:
+
+                # check if user can afford upgrade then create new dwarf
                 if check_cost(request.user, upgrade, 0):
                     new_dwarf = Dwarf(user = request.user, name=dwarf_name, portrait = "portrait" + str(randint(1,amount_portraits)) + ".png")
                     new_dwarf.save()
@@ -182,17 +189,20 @@ def new_dwarf(request, upgrade, name):
     return redirect("upgrading", name)
 
 
+# handle the regular upgrades
 @login_required(login_url='login')
 def buy_upgrade(request, name, upgrade):
     if request.method == "POST":
         dwarf = request.user.user_dwarfs.get(name = name)
         upgrade = Upgrade.objects.get(name=upgrade)
 
+        # check if the dwarf already has the upgrade else create it
         try:
             new_upgrade = Upgrade_owned.objects.get(dwarf=dwarf, upgrade=upgrade)
         except ObjectDoesNotExist:
             new_upgrade = Upgrade_owned(dwarf=dwarf, upgrade=upgrade)
 
+        # buy the upgrade if the user can afford it
         if check_cost(request.user, upgrade, new_upgrade.amount_owned):
             new_upgrade.amount_owned += 1
             new_upgrade.save()
@@ -206,36 +216,8 @@ def buy_upgrade(request, name, upgrade):
         
     return redirect("upgrading", name)
 
-def check_cost(user, upgrade, amount_owned):
-    price = upgrade.cost.all()
-    inventory = user.inventory.all()
-    # check if the user can pay for the upgrade
-    for mineral in price:
-        try:
-            user_mineral = inventory.get(name=mineral.name)
-        except ObjectDoesNotExist:
-            return False
-        if user_mineral.value < cost_complete(mineral.value, amount_owned):
-            return False
-    for mineral in price:
-        user_mineral = inventory.get(name=mineral.name)
-        user_mineral.value = user_mineral.value - cost_complete(mineral.value, amount_owned)
-        user_mineral.save()
-    return True
 
-def cost_complete(value, amount):
-    new_value = value * (1.50 ** amount)
-    new_value = round(new_value)
-    return new_value
-
-
-
-
-
-
-
-
-
+# renders the selection page
 @login_required(login_url='login')
 def select(request):
     dwarves_list = request.user.user_dwarfs.all()
@@ -244,6 +226,8 @@ def select(request):
         "dwarves" : dwarves_list
     })
 
+
+# renders the users inventory page
 @login_required(login_url='login')
 def inventory(request):
     user_inventory = request.user.inventory.all()
@@ -252,8 +236,7 @@ def inventory(request):
     })
 
 
-
-
+# renders the login page
 def login_view(request):
     if request.method == "POST":
 
@@ -274,11 +257,13 @@ def login_view(request):
         return render(request, "dwarves/login.html")
 
 
+# renders the login page
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("all_dwarves"))
 
 
+# renders the register page
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
