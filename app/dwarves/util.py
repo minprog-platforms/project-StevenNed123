@@ -30,6 +30,8 @@ def check_cost(user, upgrade, amount_owned):
 
 # calculates the actual cost based on the amount of upgrades already owned
 def cost_complete(value, amount):
+
+    # the cost increases by 50%
     new_value = value * (1.50 ** amount)
     new_value = round(new_value)
     return new_value
@@ -37,12 +39,16 @@ def cost_complete(value, amount):
 
 # the algorithm to calculate the drops
 def get_drops(job):
+
+    # calculate how much time has passed
     time = (timezone.now() - job.start_time).seconds / 60
     drop_rate = job.mine.rate / 60
     minerals = job.mine.minerals.all()
     drops = []
     chances = calculate_chance(minerals, job.dwarf.discovery)
     total_value = 0
+
+    # for each mineral calculate the amount the user will receive
     for mineral in minerals:
         value = round((drop_rate * time * job.dwarf.speed) * chances[mineral.name])
         drops.append([mineral.name, value])
@@ -55,7 +61,11 @@ def get_drops(job):
     return drops
 
 
+# used in the drops algorithm to calculate chances
 def calculate_chance(minerals, discovery):
+
+    # drop table of chances; chances are chosen based on playtesting
+    # the chances are effected by discovery
     drop_table = {"Common" : 0.68, "Uncommon" : 0.25 * ((discovery - 1) * 0.5 + discovery),
                     "Rare" : 0.06 * discovery, "Very Rare" : 0.01 * discovery}
     chances = {}

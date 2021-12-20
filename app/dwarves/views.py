@@ -145,11 +145,14 @@ def upgrading(request, name):
     upgrades = Upgrade.objects.exclude(name__istartswith="new_dwarf")
     new_dwarf_upgrades = Upgrade.objects.filter(name__istartswith="new_dwarf")
 
+    # grab all the upgrades that selected dwarf owns
     dwarf_upgrades_owned = dwarf.dwarf_upgrades.all()
     dwarf_upgrades_owned = dwarf_upgrades_owned.exclude(amount_owned = 0)
     dwarf_upgrades = []
     for upgrade_owned in dwarf_upgrades_owned:
         dwarf_upgrades.append(upgrade_owned.upgrade)
+
+    # get the amount of dwarves the user owns to check for requirements
     dwarves_count = request.user.user_dwarfs.all().count()
 
     return render(request, "dwarves/upgrading.html",{
@@ -206,6 +209,8 @@ def buy_upgrade(request, name, upgrade):
         if check_cost(request.user, upgrade, new_upgrade.amount_owned):
             new_upgrade.amount_owned += 1
             new_upgrade.save()
+
+            # add the stats to the dwarf
             dwarf.speed = round(dwarf.speed + upgrade.speed, 2)
             dwarf.capacity += upgrade.capacity
             dwarf.discovery = round(dwarf.discovery + upgrade.discovery, 2)

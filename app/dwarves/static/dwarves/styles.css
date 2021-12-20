@@ -1,3 +1,5 @@
+
+/* the body gets a nice background and text color */
 body {
     background-color:rgb(160, 137, 117) !important;
     color: rgb(15, 15, 15);
@@ -25,10 +27,7 @@ img {
     float: left !important;
   }
   
-#mainbox{
-    background-color:rgb(15, 92, 179) !important;
-}
-
+/* a class to style the selection page */
 .selection-link{
     color: inherit !important;
     text-decoration: inherit !important;
@@ -60,6 +59,7 @@ img {
     border-color: #363636 !important;
   }
 
+/* all the different mines get unique background colors */
 #Belguard {
     background-color:rgb(124, 127, 129);
 }

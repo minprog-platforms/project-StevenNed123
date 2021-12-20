@@ -5,19 +5,19 @@
 <h1>Inventory</h1>
 
 <div class="row" style="margin:2%; margin-bottom:5%; border-style:ridge; border-radius:5px; 
-            box-shadow: 10px 10px; background-color:rgb(63, 72, 82)">
+                        box-shadow: 10px 10px; background-color:rgb(63, 72, 82)">
 {% for item in inventory %}
     <div class="col-lg-3 " style="text-align: center" >
             <h4 style="margin:2%; padding:2%; border-style:ridge; border-width: 2px; border-radius:5px; display:inline-block;
-            background-color:rgb(112, 128, 144); position:relative; top:30px;">
+                        background-color:rgb(112, 128, 144); position:relative; top:30px;">
             <div>{{ item.name }}</div></h4> <br> 
 
             <img src="{% static '/dwarves/media/'|add:item.name|add:'.png' %}" alt="{{ item.name }}"
-            style="border-style:ridge; border-width: 2px; border-radius:5px;  
+                style="border-style:ridge; border-width: 2px; border-radius:5px;  
             background-color:rgb(124, 124, 124); z-index:-1"> <br>
 
             <h3 style="margin:2%; padding:2%; border-style:ridge; border-width: 2px; border-radius:360px; display:inline-block;
-            background-color:rgb(112, 128, 144); font-size:larger; position:relative; bottom:25px">
+                        background-color:rgb(112, 128, 144); font-size:larger; position:relative; bottom:25px">
             <div style="color:white; ">{{ item.value }}</div></h3>
     </div>
 {% endfor %}

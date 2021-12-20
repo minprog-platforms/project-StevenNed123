@@ -77,6 +77,8 @@ class Mineral(models.Model):
     value = models.IntegerField(blank=True, null=True, default=0)
     rarity = models.CharField(max_length=64, blank=True, null=True, default='', choices=[
         ('', ''), ('Common', 'common') ,('Uncommon', 'uncommon'), ('Rare', 'rare'), ('Very Rare', 'very_rare')])
+
+    # change the display string depending on the object it is linked to    
     def __str__(self):
         if self.user != None:
             return f"{self.user}, {self.name}, {self.value},"

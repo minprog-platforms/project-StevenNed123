@@ -46,6 +46,8 @@ def get_effect(upgrade):
 # calculates the cost based on the amount of upgrades the dwarf already has
 @register.filter(name='cost_complete')
 def cost_complete(value, amount):
+
+    # the cost increases by 50% each time
     new_value = value * (1.50 ** amount)
     new_value = round(new_value)
     return new_value

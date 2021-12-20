@@ -4,6 +4,7 @@
 {% load static %}
 <h1>Mining</h1>
 
+{# display messages #}
 <div style="margin-left:4%">
 {% if messages %}
 {% for message in messages %}
@@ -16,6 +17,8 @@
 
 <div class="row">
 {% for mine in mines %}
+
+{# only display mine if the user owns enough dwarfs #}
 {% if mine.requirement <= dwarves_count %}
 <div class="col-md-12">
     <div id={{mine.name|get_mine_name}} style="margin:2%; padding:1%; border-style:ridge; border-radius:5px; 
@@ -33,6 +36,7 @@
 
         {% if mine in active_mines %}
 
+            {# select the job that belongs to the mine #}
             {% for job in active_jobs %}
                 {% if job.mine == mine %}
                     <strong>{{ job.dwarf.name }} </strong>is currently mining: {{ job|progress }} / {{job.dwarf.capacity}} <br>
@@ -43,7 +47,7 @@
                     </form>
                 {% endif %}
             {% endfor %}
-
+                    
         {% else %}
             <form action="{% url 'start_mining' mine.name %}" method="post">
                 {% csrf_token %}
