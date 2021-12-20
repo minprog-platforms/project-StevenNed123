@@ -21,9 +21,9 @@ amount_portraits = 20
 # renders the all dwarves page
 def all_dwarves(request):
     dwarves_list = Dwarf.objects.all()
-    return render(request, "dwarves/all_dwarves.html",{
-        "page_title" : "All Dwarves",
-        "dwarves" : dwarves_list,
+    return render(request, "dwarves/all_dwarves.html", {
+        "page_title": "All Dwarves",
+        "dwarves": dwarves_list,
     })
 
 
@@ -31,17 +31,17 @@ def all_dwarves(request):
 @login_required(login_url='login')
 def my_dwarves(request):
     dwarves_list = request.user.user_dwarfs.all()
-    return render(request, "dwarves/all_dwarves.html",{
-        "page_title" : "My Dwarves",
-        "dwarves" : dwarves_list
+    return render(request, "dwarves/all_dwarves.html", {
+        "page_title": "My Dwarves",
+        "dwarves": dwarves_list
     })
 
 
 # renders the leaderboard page
 def leaderboard(request):
     users = User.objects.order_by("-gold_obtained")
-    return render(request, "dwarves/leaderboard.html",{
-        "users" : users
+    return render(request, "dwarves/leaderboard.html", {
+        "users": users
     })
 
 
@@ -62,13 +62,14 @@ def mining(request):
     inactive_dwarves = request.user.user_dwarfs.exclude(name__in=active_dwarves)
     dwarves_count = request.user.user_dwarfs.all().count()
 
-    return render(request, "dwarves/mining.html",{
-        "mines" : mines,
-        "active_mines" : active_mines,
-        "active_jobs" : active_jobs,
-        "inactive_dwarves" : inactive_dwarves,
-        "dwarves_count" : dwarves_count,
+    return render(request, "dwarves/mining.html", {
+        "mines": mines,
+        "active_mines": active_mines,
+        "active_jobs": active_jobs,
+        "inactive_dwarves": inactive_dwarves,
+        "dwarves_count": dwarves_count,
     })
+
 
 # handle the start mining posts
 def start_mining(request, name):
@@ -76,21 +77,24 @@ def start_mining(request, name):
         form = SelectionForm(request.POST)
         if form.is_valid():
             dwarf_name = form.cleaned_data["dwarf"]
-            dwarf = request.user.user_dwarfs.get(name = dwarf_name)
+            dwarf = request.user.user_dwarfs.get(name=dwarf_name)
             mine = Mine.objects.get(name=name)
 
+            # saveguard against users reloading previous page and assigning a dwarf to the same mine
             # only create a new job if that mine doesn't have a job
             try:
                 Job.objects.get(dwarf__in=request.user.user_dwarfs.all(), mine=mine)
             except ObjectDoesNotExist:
 
+                # saveguard against users reloading previous page and assigning same dwarf to different mine
                 # only create a new job if that dwarf does not already have a job
                 try:
                     Job.objects.get(dwarf=dwarf)
                 except ObjectDoesNotExist:
-                    new_job = Job(start_time = timezone.now(), dwarf=dwarf, mine=mine)
+                    new_job = Job(start_time=timezone.now(), dwarf=dwarf, mine=mine)
                     new_job.save()
     return redirect("mining")
+
 
 # handle the stop mining posts
 def stop_mining(request, name):
@@ -128,7 +132,7 @@ def stop_mining(request, name):
 
 # a simple selectionform to fill user submitted input
 class SelectionForm(forms.Form):
-    dwarf = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder":"Name of new Dwarf"})) 
+    dwarf = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Name of new Dwarf"}))
 
 
 # render the upgrade page
@@ -137,7 +141,7 @@ def upgrading(request, name):
 
     # try to get the users dwarf else redirect user to selection page
     try:
-        dwarf = request.user.user_dwarfs.get(name = name)
+        dwarf = request.user.user_dwarfs.get(name=name)
     except ObjectDoesNotExist:
         return redirect("select")
 
@@ -147,7 +151,7 @@ def upgrading(request, name):
 
     # grab all the upgrades that selected dwarf owns
     dwarf_upgrades_owned = dwarf.dwarf_upgrades.all()
-    dwarf_upgrades_owned = dwarf_upgrades_owned.exclude(amount_owned = 0)
+    dwarf_upgrades_owned = dwarf_upgrades_owned.exclude(amount_owned=0)
     dwarf_upgrades = []
     for upgrade_owned in dwarf_upgrades_owned:
         dwarf_upgrades.append(upgrade_owned.upgrade)
@@ -155,15 +159,15 @@ def upgrading(request, name):
     # get the amount of dwarves the user owns to check for requirements
     dwarves_count = request.user.user_dwarfs.all().count()
 
-    return render(request, "dwarves/upgrading.html",{
-        "page_title" : f"Upgrading {name}",
-        "dwarf" : dwarf,
-        "upgrades" : upgrades,
-        "dwarf_upgrades_owned" : dwarf_upgrades_owned,
-        "dwarf_upgrades" : dwarf_upgrades,
-        "new_dwarf_upgrades" : new_dwarf_upgrades,
-        "dwarves_count" : dwarves_count,
-        "form" : SelectionForm(),
+    return render(request, "dwarves/upgrading.html", {
+        "page_title": f"Upgrading {name}",
+        "dwarf": dwarf,
+        "upgrades": upgrades,
+        "dwarf_upgrades_owned": dwarf_upgrades_owned,
+        "dwarf_upgrades": dwarf_upgrades,
+        "new_dwarf_upgrades": new_dwarf_upgrades,
+        "dwarves_count": dwarves_count,
+        "form": SelectionForm(),
     })
 
 
@@ -177,16 +181,16 @@ def new_dwarf(request, upgrade, name):
             dwarf_name = form.cleaned_data["dwarf"]
 
             # check if the user has a dwarf with the same name
-            dwarf_names = request.user.user_dwarfs.all().values_list("name",flat=True)
+            dwarf_names = request.user.user_dwarfs.all().values_list("name", flat=True)
             if dwarf_name.lower() not in [x.lower() for x in dwarf_names]:
 
                 # check if user can afford upgrade then create new dwarf
                 if check_cost(request.user, upgrade, 0):
-                    new_dwarf = Dwarf(user = request.user, name=dwarf_name, portrait = "portrait" + str(randint(1,amount_portraits)) + ".png")
+                    new_dwarf = Dwarf(user=request.user, name=dwarf_name, portrait="portrait" + str(randint(1, amount_portraits)) + ".png")
                     new_dwarf.save()
-                    messages.success(request, f"Succesfully added new dwarf!")
+                    messages.success(request, "Succesfully added new dwarf!")
                 else:
-                    messages.error(request, f"You dont have enough Minerals for a new dwarf!")
+                    messages.error(request, "You dont have enough Minerals for a new dwarf!")
             else:
                 messages.error(request, f"You already have a dwarf named: {dwarf_name}")
     return redirect("upgrading", name)
@@ -196,7 +200,7 @@ def new_dwarf(request, upgrade, name):
 @login_required(login_url='login')
 def buy_upgrade(request, name, upgrade):
     if request.method == "POST":
-        dwarf = request.user.user_dwarfs.get(name = name)
+        dwarf = request.user.user_dwarfs.get(name=name)
         upgrade = Upgrade.objects.get(name=upgrade)
 
         # check if the dwarf already has the upgrade else create it
@@ -218,7 +222,7 @@ def buy_upgrade(request, name, upgrade):
             messages.success(request, f"Succesfully bought: {upgrade.name}!")
         else:
             messages.error(request, f"You dont have enough Minerals for: {upgrade.name}!")
-        
+
     return redirect("upgrading", name)
 
 
@@ -226,9 +230,9 @@ def buy_upgrade(request, name, upgrade):
 @login_required(login_url='login')
 def select(request):
     dwarves_list = request.user.user_dwarfs.all()
-    return render(request, "dwarves/select.html",{
-        "page_title" : "Select a Dwarf for Upgrading",
-        "dwarves" : dwarves_list
+    return render(request, "dwarves/select.html", {
+        "page_title": "Select a Dwarf for Upgrading",
+        "dwarves": dwarves_list
     })
 
 
@@ -237,7 +241,7 @@ def select(request):
 def inventory(request):
     user_inventory = request.user.inventory.all()
     return render(request, "dwarves/inventory.html", {
-        "inventory" : user_inventory,
+        "inventory": user_inventory,
     })
 
 
@@ -293,7 +297,7 @@ def register(request):
         login(request, user)
 
         # create a users first dwarf
-        dwarf = Dwarf(name=user.username, user=user, portrait = "portrait" + str(randint(1,amount_portraits)) + ".png")
+        dwarf = Dwarf(name=user.username, user=user, portrait="portrait" + str(randint(1, amount_portraits)) + ".png")
         dwarf.save()
         mineral = Mineral(user=user, name="Gold", value=0)
         mineral.save()

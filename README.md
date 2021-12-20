@@ -1,136 +1,61 @@
 # Dwarves
-###### by Steven Nederend
-
-Dwarves is a browser based idle game, where users build a team of dwarves to mine various minerals.
-These minerals can be used to upgrade each dwarf, allowing for faster mining and more upgrading.
-
-Dwarves is in essence a very simple game that does not require any active elements or live updating of webpages.
-The game will however require large scale databases to store different users, dwarves and upgrades.
-This makes it suitable to work with the Django webframework and make use of the models that Django provides.
-
-There are already a ton of idle games out there, cookie clicker, forager, melvor idle or even social games like clash of clans.
-One thing that Dwarves aims to do is add some simple social elements like a leaderboard, the ability to view other players dwarves and maybe the ability to trade minerals.
-On top of that Dwarves should remain a simple game, without it getting bloated by a ton of different options and gameplay elements.
-
-The hardest parts of this project will probaply be:
-<ul>
-  <li>Fitting every stat and piece of information about the different dwarves and mines on the webpages in a clear view.</li>
-  <li>Creating a compelling game without live updating the browser.</li>
-  <li>Making the interface user friendly without the use of live updating.</li>
-  <li>Fitting in all the different gameplay elements in the timespan given.</li>
-</ul> 
-
-The minimal viable product would need to have most features for the game to work.
-The features that could be scrapped for a minimal viable product would be in order:
-<ol>
-  <li>The trading page</li>
-  <li>The minimum dwarf requirements on the mining and upgrades.</li>
-  <li>Being able to buy upgrades multiple times</li>
-  <li>The ability to buy multiple dwarves per user</li>
-</ol> 
+##### by Steven Nederend
+##### 2021 All rights reserved
 
 
+Dwarves is a browser based idle game, where players can build a team of dwarves to mine various minerals.
+These minerals can be used to purchase upgrades for each dwarf, allowing for faster mining and thus more upgrading.
+More upgrades and mines will unlock for the player as they progress throughout the game with a total of thirteen mines to unlock and twelve different upgrades to unlock.
+There is also a leaderboard feature allowing players to test their dwarves against eachother.
 
 
-# Sketches
+## Register
 
-To get a general idea of what the webpages will look like some quick sketches where made.
-These sketches also include a trading page which is an additional feature that probaply wont be added, so in future designs this page will not be present.
-Check the design portion for a more detailed overview of the pages.
+To start playing Dwarves you have to register an account, after registration your first dwarf will be created automatically with your username, making you the first dwarf in your colony. after registration you will be taken to the dwarves page.
 
-<img src="doc/sketch1.png" alt="Sketch1" width="400"/>
+## Dwarves page
 
-<img src="doc/sketch2.png" alt="Sketch2" width="400"/>
+The dwarves page is the homepage of the site, here you can view all dwarves, including the dwarves from other players.
+If you want to view only your own dwarves, you can go visit the my dwarves page instead.
+
+<img src="doc/homepage.png" alt="dwarves page" width="500"/>
+
+## Leaderboard
+
+The leaderboard page shows a ranking of every player.
+The ranking is based on the total amount of gold earned because gold is going to be the most important resource.
+
+<img src="doc/leaderboard.png" alt="dwarves page" width="500"/>
+
+## Mining
+
+Head over to the mining page to start mining and earn resources.
+You can assign a single dwarf to a single mine, after waiting for a short time you can collect the resources your dwarf has mined.
+The drops/hour and the dwarfs speed determine how fast a dwarf mines, A dwarfs capacity determines how many drops they can carry and their discovery determines how likely they are to find rare minerals.
+
+<img src="doc/mining.png" alt="dwarves page" width="500"/>
+
+## Inventory
+
+When viewing the inventory page you get a large overview of every resource you currently possess.
+
+<img src="doc/inventory.png" alt="dwarves page" width="500"/>
+
+## Upgrading
+
+In the upgrading page you can upgrade your dwarves. Before upgrading you will have to select a dwarf to upgrade. 
+Each upgrade has its own unique cost, see the inventory at the side of the page to quickly check if you have enough resources for an upgrade.
+
+<img src="doc/upgrading.png" alt="dwarves page" width="500"/>
+
+At the bottom of the upgrade page is the get a new dwarf upgrade, here users can add dwarves to their colony, for a hefty price.
+
+<img src="doc/new_dwarf.png" alt="dwarves page" width="500"/>
 
 
-# External Components 
 
-On top of using the Django webframework and the Django model class.
-The project will also make use of some bootstrap elements, in specific it will use:
-<ul>
-  <li>alerts, as messages to inform to user of wrong input</li>
-  <li>containers or a grid, to align all the different elements</li>
-  <li>a navigation bar to go to different pages</li>
-</ul> 
 
-# Design
 
-Every page on the site will make use of a standard navigation bar, so from every page it is possible to go to almost every other page.
-This is one of the reasons why this design document wont feature a workflow, because it just wouldn't be very insightful.
-All these pages will asume that the user is logged in.
-The login page and the register page will be default Django pages with maybe a color change to match the other pages.
-When the user is not logged in, the tabs mining, upgrading, inventory and my dwarves will all be hidden and unavailable.
-
-### All dwarves page
-This is the homepage of the website and allows people to view all the different dwarves and their stats.
-
-![All Dwarves](doc/all_dwarves_page.png)
-
-### My dwarves page
-This page will allow users to only see the dwarves that belong to them.
-
-![My Dwarves](doc/my_dwarves_page.png)
-
-### Leaderboard page
-This page will allow people to view a leaderboard of users based on the amount of gold in each players inventory.
-
-![Leaderboard](doc/leaderboard_page.png)
-
-### Inventory page
-This page will allow users to view the minerals they own, gold being the most important one.
-
-![Inventory](doc/inventory_page.png)
-
-### Mining page
-This will allow users to view all available mines, the resources in those mines and the droprate.
-When a dwarf is currently mining in a mine, it will show the time it takes for their bag to be filled aswell as an option to remove the dwarf from that mine.
-The user can only see their own dwarf in the mining page, so two users can mine in the same mine at the same time.
-When a mine is not occupied, the user can press the start mining button and will be taken to a selection of available dwarfs on the selection page.
-
-![Mining](doc/mining_page.png)
-
-### Selection page
-This page will allow users to select a dwarf to either upgrade or start mining.
-
-![Selection](doc/select_page.png)
-
-### Upgrading page
-Before the user goes to the upgrading page they will be taken to the selection page to select a dwarf to upgrade.
-Upgrades can be bought multiple times and will increase in price each time.
-The prices are unique per dwarf so when selecting a dwarf the prices will match that.
-The price of a new dwarf upgrade will increase based on the amount of dwarves the user already has.
-The user can choose a name for their new dwarf, the name of the first dwarf will be equal to that users username.
-
-![Upgrading](doc/upgrades_page.png)
-
-### Dwarven portraits
-When a new dwarf is created a portrait will be chosen at random, each portrait will use the same base except for the colors.
-
-<img src="doc/portrait.png" alt="portrait" width="400"/>
-
-# The Database
-With the current design the amount of models the site uses will be seven.
-For a better overview, the models can be split into three different types:
-
-### User & Dwarves
-The user model will be a standard user model that Django provides with one extra field for the inventory.
-The inventory has a many to many relationship with a mineral which also has a name and a value.
-For each dwarf the a user will be stored aswell as some stats and the mine that dwarf is currently working in.
-
-![Databse User & Dwarves](doc/database1.png)
-
-### Mines
-The mines will use two databases, one to store information about the mine and one to store information about the minerals inside the mine.
-Each mine also has a requirement, wich is the amount of dwarves necesarry to be able to enter this mine.
-The rarity of each mineral determines the chances of getting that mineral with each drop.
-
-![Mines](doc/database2.png)
-
-### Upgrade
-The upgrades will use two databases, one to store information about the upgrade the other to store information about the upgrades each dwarf has.
-The prices shown of the upgrades will change based on the number of times a dwarf has bought that upgrade.
-
-![Upgrade](doc/database3.png)
 
 
 
