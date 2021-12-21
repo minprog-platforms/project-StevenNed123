@@ -54,12 +54,7 @@ At the bottom of the upgrade page is the get a new dwarf upgrade, here users can
 
 # Demo
 
-<div style="width:100%;height:0px;position:relative;padding-bottom:56.250%;"><iframe src="https://streamable.com/e/wmsscy" frameborder="0" width="100%" height="100%" allowfullscreen style="width:50%;height:50%;position:absolute;left:0px;top:0px;overflow:hidden;"></iframe></div>
-
-
-
-
-
+https://user-images.githubusercontent.com/79926828/146966910-24e3d3bd-636f-4472-af6e-9bfdd50f7b20.mp4
 
 
 
