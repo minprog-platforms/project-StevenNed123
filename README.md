@@ -54,12 +54,7 @@ At the bottom of the upgrade page is the get a new dwarf upgrade, here users can
 
 # Demo
 
-
 <a href=https://streamable.com/wmsscy><img src="doc/demo.png" alt="dwarves page" width="500"/></a>
-
-
-
-
 
 
 
