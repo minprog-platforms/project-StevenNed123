@@ -19,7 +19,7 @@ def check_cost(user, upgrade, amount_owned):
             return False
         if user_mineral.value < cost_complete(mineral.value, amount_owned):
             return False
-    
+
     # buy the upgrade
     for mineral in price:
         user_mineral = inventory.get(name=mineral.name)
@@ -66,8 +66,8 @@ def calculate_chance(minerals, discovery):
 
     # drop table of chances; chances are chosen based on playtesting
     # the chances are effected by discovery
-    drop_table = {"Common" : 0.68, "Uncommon" : 0.25 * ((discovery - 1) * 0.5 + discovery),
-                    "Rare" : 0.06 * discovery, "Very Rare" : 0.01 * discovery}
+    drop_table = {"Common": 0.68, "Uncommon": 0.25 * ((discovery - 1) * 0.5 + discovery),
+                    "Rare": 0.06 * discovery, "Very Rare": 0.01 * discovery}
     chances = {}
     total_chance = 0
     for mineral in minerals:

@@ -14,8 +14,8 @@ def time_remaining(job):
     remainder = job.dwarf.capacity / (rate * job.dwarf.speed) - time
     if remainder <= 0:
         return 0
-    else: 
-        return round(remainder,1)
+    else:
+        return round(remainder, 1)
 
 
 # filter to calculate the progress of a job
@@ -60,7 +60,3 @@ def get_mine_name(name):
         return name.split(' ', 1)[1]
     else:
         return name.split(' ', 1)[0]
-
-
-
-
